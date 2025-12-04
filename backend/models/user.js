@@ -4,11 +4,12 @@ const Schema = mongoose.Schema;
 
 //Create the contact model schema
 const userSchema = new Schema({
-  username: {
+  name: {
     type: String,
     required: true,
+    unique: true
   },
-  passward: {
+  password: {
     type: String,
     required: true,
   },

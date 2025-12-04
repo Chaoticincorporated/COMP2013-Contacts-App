@@ -30,7 +30,7 @@ export default function UserForm({userData, handleOnUserSubmit, handleOnUserChan
         <button>Submit</button>
       </form>
       <p>{postResponse}</p>
-      <button onClick={() => navigate(`/${nextPage}`)}>{nextPage === "login" ? "Go to login page" : "Go to register page"}</button>
+      <button onClick={() => navigate(`/${nextPage}`)}>Go to login page</button>
     </div>
   );
 }

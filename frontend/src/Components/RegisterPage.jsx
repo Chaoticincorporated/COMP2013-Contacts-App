@@ -17,9 +17,7 @@ export default function RegisterPage(){
     }
     const handleRegister = async () => {
         try {
-            const response= await axios.post("http://localhost3000/register", {
-                ...userData,
-            });
+            const response= await axios.post("http://localhost:3000/register", userData);
             setPostResponse(response.data.message)
         } catch (err) {
             console.log(err)
@@ -41,7 +39,7 @@ export default function RegisterPage(){
                 handleOnUserChange={handleOnUserChange}
                 handleOnUserSubmit={handleOnUserSubmit}
                 currentPage="Register"
-                nextPage="login"
+                nextPage=""
             />
         </div>
     )

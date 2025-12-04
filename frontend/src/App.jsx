@@ -1,5 +1,5 @@
 import "./App.css";
-import ContactsApp from "./Components/ContactsApp";
+import ContactsPage from "./Components/ContactsPage";
 import LoginPage from "./Components/LoginPage";
 import RegisterPage from "./Components/RegisterPage";
 import PageNotFound from "./Components/PageNotFound";
@@ -12,7 +12,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage/>} />
-          <Route path="/contacts" element={<ContactsApp/>}/>
+          <Route path="/contacts" element={<ContactsPage/>}/>
           <Route path="/register" element={<RegisterPage/>} />
           <Route path="/unauthorized" element={<UnauthorizedPage/>} />
           <Route path="*" element={<PageNotFound/>} />

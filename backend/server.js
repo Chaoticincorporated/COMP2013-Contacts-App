@@ -4,7 +4,7 @@ const server = express();
 const port = 3000;
 const mongoose = require("mongoose"); //import mongoose
 require("dotenv").config(); //import dotenv
-const { DB_URI } = process.env; //to grab the same variable from the dotenv file
+const { DB_URI, SECRET_KEY } = process.env; //to grab the same variable from the dotenv file
 const cors = require("cors"); //For disabling default browser security
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
@@ -32,6 +32,25 @@ mongoose
 //Root route
 server.get("/", (request, response) => {
   response.send("Server is Live!");
+});
+
+server.post("/", async (request, response) => {
+  const {name, password} = request.body;
+  try{
+    const user = await User.findOne({name});
+    if (!user){
+      return response.status(404).send({message: "User does not exist"})
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match)
+    {
+      return response.status(403).send({message: "Incorrect credentials"})
+    }
+    const jwtToken = jwt.sign({id: user._id, name, }, SECRET_KEY);
+    return response.status(201).send({message: "User Authenticated", token: jwtToken});
+  }catch(err){
+    response.status(500).send({message: err.message})
+  }
 });
 
 //To GET all the data from contacts collection
@@ -112,12 +131,14 @@ server.patch("/contacts/:id", async (request, response) => {
 });
 
 server.post("/register", async (request, response) => {
-  const { username, password} = request.body;
+  const { name, password} = request.body;
+  console.log(name);
+  console.log(password);
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
-      username,
-      passward: hashedPassword,
+      name,
+      password: hashedPassword,
     });
     await newUser.save();
     response.send({message:"User Created"});
