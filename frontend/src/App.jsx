@@ -1,10 +1,23 @@
 import "./App.css";
 import ContactsApp from "./Components/ContactsApp";
+import LoginPage from "./Components/LoginPage";
+import RegisterPage from "./Components/RegisterPage";
+import PageNotFound from "./Components/PageNotFound";
+import UnauthorizedPage from "./Components/UnauthorizedPage";
+import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 
 function App() {
   return (
     <>
-      <ContactsApp />
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginPage/>} />
+          <Route path="/contacts" element={<ContactsApp/>}/>
+          <Route path="/register" element={<RegisterPage/>} />
+          <Route path="/unauthorized" element={<UnauthorizedPage/>} />
+          <Route path="*" element={<PageNotFound/>} />
+        </Routes>
+      </Router>
     </>
   );
 }

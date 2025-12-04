@@ -6,7 +6,11 @@ const mongoose = require("mongoose"); //import mongoose
 require("dotenv").config(); //import dotenv
 const { DB_URI } = process.env; //to grab the same variable from the dotenv file
 const cors = require("cors"); //For disabling default browser security
-const Contact = require("./models/contact"); //importing the model schema
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
+//importing the model schemas
+const Contact = require("./models/contact"); 
+const User = require("./models/user");
 
 //Middleware
 server.use(express.json()); //to ensure data is trasmitted as json
@@ -104,5 +108,20 @@ server.patch("/contacts/:id", async (request, response) => {
     });
   } catch (error) {
     response.status(500).send({ message: error.message });
+  }
+});
+
+server.post("/register", async (request, response) => {
+  const { username, password} = request.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username,
+      passward: hashedPassword,
+    });
+    await newUser.save();
+    response.send({message:"User Created"});
+  } catch (error) {
+    response.status(500).send(error.message);
   }
 });
